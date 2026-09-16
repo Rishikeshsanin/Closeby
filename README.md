@@ -6,22 +6,11 @@ Closeby is a map-first social discovery app for staying connected with friends a
 
 ## Project status
 
-Closeby is **App #11** in the shared Supabase Project Hub and owns only the isolated `closeby` database schema. The original interaction prototype remains the default production experience while the real-user client is staged behind `?live=1` until the Project Hub Data API explicitly exposes only the `closeby` schema.
+Closeby is **App #11** in the shared Supabase Project Hub and owns only the isolated `closeby` database schema.
 
-### V0 prototype — live
+The **real-user V1 client is now the default production experience**. The original interaction prototype is preserved at `?demo=1` as a reference/rollback view.
 
-- Interactive discovery map
-- Browser geolocation with graceful demo fallback
-- Approximate nearby user markers
-- Search by people or interests
-- Profile previews and interests
-- Connection request flow
-- Existing connections view
-- Local prototype messaging
-- Discoverability/privacy toggle
-- Responsive desktop and mobile UI
-
-### V1 real-user client — staged
+### V1 — live
 
 - Email/password authentication
 - Profile onboarding
@@ -34,11 +23,21 @@ Closeby is **App #11** in the shared Supabase Project Hub and owns only the isol
 - Database-backed messaging with polling
 - Read state
 - Block/report flows
-- Desktop and mobile live UI
+- Responsive desktop and mobile UI
+
+### V0 prototype — preserved
+
+- Interactive discovery map
+- Demo nearby users
+- Profile previews and interests
+- Local prototype connection/chat behavior
+- Responsive desktop and mobile UI
+
+Open with `?demo=1`.
 
 ## Backend
 
-The Project Hub migration creates only `closeby.*` resources:
+Closeby owns only these Project Hub resources:
 
 - `closeby.profiles`
 - `closeby.presence`
@@ -47,7 +46,9 @@ The Project Hub migration creates only `closeby.*` resources:
 - `closeby.blocks`
 - `closeby.reports`
 
-All user-facing tables have Row Level Security enabled. Anonymous database access is not granted. Sensitive mutations are performed through authenticated, Closeby-scoped RPCs.
+All user-facing Closeby tables have Row Level Security enabled. Anonymous users have no `closeby` schema/table access and cannot execute Closeby application RPCs. Direct browser access is least-privilege: profile self-management, connection/message reads, and report insert/read only; sensitive writes go through authenticated Closeby RPCs.
+
+The Data API has automatic exposure of new tables disabled, and Closeby's schema defaults are additionally hardened so future objects are opt-in.
 
 ## Location privacy
 
@@ -77,7 +78,7 @@ Read these before any Project Hub change:
 - `AGENTS.md`
 - `SUPABASE_HUB_RULES.md`
 
-Closeby must not modify another app's schema or ordinary Project Hub shared configuration without explicit approval.
+Closeby must not modify another app's schema or shared Project Hub configuration without explicit approval.
 
 ## Run locally
 
@@ -86,16 +87,16 @@ npm install
 npm run dev
 ```
 
-Default V0 prototype:
+Real Closeby client:
 
 ```text
 http://localhost:5173/
 ```
 
-Staged real-user client:
+Preserved V0 prototype:
 
 ```text
-http://localhost:5173/?live=1
+http://localhost:5173/?demo=1
 ```
 
 Production build:
@@ -105,9 +106,6 @@ npm run build
 ```
 
 ## Roadmap
-
-### V0 — interaction prototype
-Map, profiles, connection flow, friends, messaging UI and privacy controls.
 
 ### V1 — real users
 Authentication, onboarding, secure approximate presence, nearby discovery, connection requests, persisted chat, blocks and reports.
