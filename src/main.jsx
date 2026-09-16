@@ -5,10 +5,10 @@ import './styles.css'
 import App from './App'
 import LiveApp from './LiveApp'
 
-const livePreview = new URLSearchParams(window.location.search).get('live') === '1'
+const demoMode = new URLSearchParams(window.location.search).get('demo') === '1'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {livePreview ? <LiveApp /> : <App />}
+    {demoMode ? <App /> : <LiveApp />}
   </React.StrictMode>,
 )
